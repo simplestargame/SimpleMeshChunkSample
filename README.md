@@ -1,4 +1,47 @@
-﻿using System;
+# Runtime Mesh Merging Sample
+
+Welcome to the Runtime Mesh Merging Sample repository!
+This project is a sample demonstrating how to merge cube meshes into a single massive mesh without causing significant disruption to the main thread.  
+
+![サンプルシーン](main.png)
+
+## Features
+- **Create Mesh Data Files from Any Mesh:** Included is a tool that allows you to save mesh data in a dedicated format by providing a MeshFilter.  
+- **Face Culling:** The dedicated mesh data files contain vertex data divided into six faces of the cube and an other regions to prevent unnecessary faces from being built when merged.  
+- **Optimization:** The Job System is employed to minimize background multithreading, ensuring minimal impact on the main thread.  
+
+## Getting Started
+Follow these steps to try out the Runtime Mesh Merging Sample:
+
+1. Clone this repository.
+1. Open the project from the cloned folder using Unity Hub.
+1. Play the sample scene to understand how mesh merging is performed.
+
+# ランタイム メッシュ結合サンプル
+
+**ランタイム メッシュ結合サンプル** リポジトリへようこそ！  
+このプロジェクトは、メインスレッドに極力迷惑をかけずにキューブメッシュを結合して  
+巨大な一つのメッシュを結合して作成するサンプルです。
+
+## 特徴
+
+- **任意のメッシュからメッシュデータファイルを作成:** MeshFilterを渡せば、専用のメッシュデータファイル形式で保存するツールが付属しています。
+- **不要面除去:** 専用メッシュデータファイルにはキューブの6面とそれ以外の領域に分かれた頂点データが格納されています、結合したときに  
+不要な面が構築されないようにカリングする仕組みが導入されています。
+- **最適化:** Job System を用いて極力バックグラウンドマルチスレッド化がほどこされ、メインスレッドに負荷を与えません。
+
+## 始め方
+
+以下の手順に従って、ランタイム メッシュ結合サンプルをお試しできます。
+
+1. このリポジトリをクローンします。
+1. Unity Hub 経由でクローンしたフォルダからプロジェクトを開きます。
+1. サンプルシーンを開いて再生することでメッシュの結合サンプル処理を理解します。
+
+## How to use
+
+```csharp
+using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
@@ -102,7 +145,7 @@ namespace SimplestarGame
                 countOffsets[index] = vertexIndexCount;
                 vertexIndexCount += counts;
             }
-            
+
             meshData.subMeshCount = 1;
             meshData.SetVertexBufferParams(vertexIndexCount, CustomLayoutMesh.VERTEX_ATTRIBUTE_DESCRIPTORS);
             meshData.SetIndexBufferParams(vertexIndexCount, IndexFormat.UInt32);
@@ -128,7 +171,7 @@ namespace SimplestarGame
             writeJobHandle.Complete();
             countOffsets.Dispose();
             xyz.Dispose();
-            
+
             float3x2 bounds = new float3x2();
             bounds.c0 = math.min(bounds.c0, new float3(-0.5f, -0.5f, -0.5f));
             bounds.c1 = math.max(bounds.c1, new float3(this.width + 0.5f, this.height + 0.5f, this.depth + 0.5f));
@@ -199,7 +242,7 @@ namespace SimplestarGame
                 indexStart = 0,
                 bounds = newMesh.bounds
             }, MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices | MeshUpdateFlags.DontNotifyMeshUsers);
-            Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, new[] { newMesh }, 
+            Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, new[] { newMesh },
                 MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices | MeshUpdateFlags.DontNotifyMeshUsers);
             return newMesh;
         }
@@ -272,3 +315,11 @@ namespace SimplestarGame
         }
     }
 }
+
+```
+
+## License
+This project is licensed under the MIT License.
+
+## Contribution
+If you find a bug, have an enhancement idea, or want to contribute in any other way, please open an issue or submit a pull request.
