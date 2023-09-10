@@ -23,7 +23,6 @@ namespace SimplestarGame
         public int height;
         public int depth;
         [ReadOnly] public NativeArray<CustomVertexLayout> fileVertexData;
-        [NativeDisableContainerSafetyRestriction] public NativeArray<int> indexData;
         [NativeDisableParallelForRestriction] public NativeArray<CustomVertexLayout> vertexData;
 
         /// <summary>
@@ -62,7 +61,6 @@ namespace SimplestarGame
             var x = xyz.x;
             var y = xyz.y;
             var z = xyz.z;
-            this.indexData[index] = index;
             if (this.GetVoxelFlag(ref voxelData, x, y, z) == 255)
             {
                 int readOffset = 0;

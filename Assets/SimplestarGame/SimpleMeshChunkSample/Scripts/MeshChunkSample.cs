@@ -107,6 +107,10 @@ namespace SimplestarGame
             meshData.SetVertexBufferParams(vertexIndexCount, CustomLayoutMesh.VERTEX_ATTRIBUTE_DESCRIPTORS);
             meshData.SetIndexBufferParams(vertexIndexCount, IndexFormat.UInt32);
             NativeArray<int> indexData = meshData.GetIndexData<int>();
+            for (int index = 0; index < indexData.Length; index++)
+            {
+                indexData[index] = index;
+            }
             NativeArray<CustomVertexLayout> vertexData = meshData.GetVertexData<CustomVertexLayout>(stream: 0);
             var writeJobHandle = new WriteChunkDataJob()
             {
@@ -118,7 +122,6 @@ namespace SimplestarGame
                 height = this.height,
                 depth = this.depth,
                 fileVertexData = result.fileVertexData,
-                indexData = indexData,
                 vertexData = vertexData
             }.Schedule(xyz.Length, 8);
             while (!writeJobHandle.IsCompleted)
